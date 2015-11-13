@@ -19,6 +19,8 @@ Also, keep in mind that in order to send a remark to a colleague, you need to ha
 
 So if there is something you want them to know, let them know!
 
+![sysk](demoImg/sysk-demoUser-video1.gif)
+
 
 ##Integration:
 
