@@ -1,0 +1,95 @@
+{% set userCount = syskUsers|length %}
+{% set userRows = userCount/3|round(0, 'floor') %}
+
+{% if userRows < userCount/3 %}
+	{% set userRows = userRows+1 %}
+{% endif %}
+
+<form id="syskForm" data-action="{{ path("sysk_alert_sendSYSK") }}">
+	<div id="syskUserChoice">
+		<h3>Choisissez un utilisateur</h3>
+		<div class="syskUserTable">
+			<table border=0 cellpadding=0 cellspacing=0>
+				{% set elemIndex = 0 %}
+				{% set elemCount = 0 %}
+				<tr>
+					{% for fcchild in form.syskUser %}	
+						<td>
+							{{ form_widget( fcchild, { 'attr' : { 'onclick' : "senderSYSKstep2( this )" } } ) }}
+				    		<label class="elementLb">{{ form_label( fcchild ) }}</label>
+				    	</td>
+				    	{% set elemIndex = elemIndex+1 %}
+				    	{% set elemCount = elemCount+1 %}
+				    	{% if elemIndex == 3 and elemCount < userCount %}
+				    		</tr>
+				    		<tr>
+				    		{% set elemIndex = 0 %}
+				    	{% endif %}
+				    {% endfor %}
+				    {% if elemIndex < 3 and elemCount == userCount %}
+				    	{% for i in elemIndex..3 %}
+				    		<td></td>
+				    	{% endfor %}
+				    {% endif %}
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="syskTypeChoice">
+		<table border=0 cellspacing=0 cellpadding=0 class="choiceTable">
+			<tr>
+				<td><strong>Récepteur : </strong><label class="receptorLabel"></label></td>
+				<td class="returnButton"><input type="button" value="<< Changer de récepteur" onClick="senderSYSKstep1()" /></td>
+			</tr>
+			<tr>
+				<td colspan=2 class="tableMessage">Type de message</td>
+			</tr>
+			<tr>
+				<td colspan=2 class="tableInput">
+					<div class="firstElement">
+						<i class="fa fa-certificate"></i> {{ form_label( form.syskType[0] ) }}
+						{{ form_widget( form.syskType[0], { 'attr' : { 'onclick' : "senderSYSKstep3Plus()" } } ) }}
+					</div>
+					<div class="lastElement">
+						{{ form_widget( form.syskType[1], { 'attr' : { 'onclick' : "senderSYSKstep3Minus()" } } ) }}
+						{{ form_label( form.syskType[1] ) }}
+						<i class="fa fa-cloud"></i>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="syskPositifChoice">
+		<h4>Feedback Positif</h4>
+		<div class="choiceLabel">{{ form_label( form.positifComment ) }}</div>
+		<div class="choiceWidget">{{ form_widget( form.positifComment ) }}</div>
+		<div class="buttonLabel"><input type="button" value="Envoyer SYSK" onClick="validateAndSendSYSK()" /></div>
+	</div>
+
+	<div id="syskNegatifChoice">
+		<input type="hidden" id="validationUrl" value="{{ path("sysk_alert_validateReceiver") }}" />
+		<h4>Something You Should Know</h4>
+		<div>
+			<div id="irritantInsuficcientRatio" class="hideClass">
+				Vous devez envoyer au moins un avis positif à cet utilisateur pour chaque irritant que vous voulez envoyer.
+			</div>
+			<div id="irritantAllowedRatio">
+				<div class="choiceLabel">{{ form_label( form.negatifComment ) }}</div>
+				<div class="choiceWidget">
+					{{ form_widget( form.negatifComment, { "attr" : { "onChange" : "negativeTokenSelector()" } } ) }}
+					<ul class="irritant-messages">
+						{% for k,irr in irritants %}
+					 		<li class="irritant-message-{{ k }}">« {{ irr }} »</li>
+					 	{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div class="buttonLabel" id="negativeButton"><input type="button" value="Envoyer SYSK" onClick="validateAndSendSYSK()" /></div>
+		</div>
+	</div>
+	<div class="hideClass">
+		{{ form_rest( form ) }}
+	</div>
+</form>

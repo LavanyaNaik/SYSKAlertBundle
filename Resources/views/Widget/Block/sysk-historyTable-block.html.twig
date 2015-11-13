@@ -1,0 +1,38 @@
+<thead>
+	<tr>
+		<th class="sysk-tbMessage">Message</th>
+		<th class="sysk-tbType">Type</th>
+		<th class="sysk-tbDate">Date</th>
+	</tr>
+</thead>
+<tbody>
+	{% for syskMessage in syskMessages %}
+		<tr>
+			<td>{{ syskMessage["message"] }}</td>
+			<td class="centered">{{ syskMessage["type"] }}</td>
+			<td class="centered">{{ syskMessage["created"] }}</td>
+	{% endfor %}
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan=3 class="syskPagination">
+			{% if actualPage > 1 %}
+				<a data-url="{{ path("sysk_alert_retrieveInboxPage", {"page" : 1} ) }}" onClick="goToSyskPage( this )"><i class="fa fa-angle-double-left"></i></a>
+				<a data-url="{{ path("sysk_alert_retrieveInboxPage", {"page" : actualPage-1} ) }}" onClick="goToSyskPage( this )"><i class="fa fa-angle-left"></i></a>
+			{% endif %}
+
+			{% for i in 1..paginationMax %}
+				{% if i == actualPage %}
+					<strong>{{ i }}</strong>
+				{% else %}
+					<a data-url="{{ path("sysk_alert_retrieveInboxPage", {"page" : i} ) }}" onClick="goToSyskPage( this )">{{ i }}</a>
+				{% endif %}
+			{% endfor %}
+
+			{% if actualPage < paginationMax %}
+				<a data-url="{{ path("sysk_alert_retrieveInboxPage", {"page" : actualPage+1} ) }}" onClick="goToSyskPage( this )"><i class="fa fa-angle-right"></i></a>
+				<a data-url="{{ path("sysk_alert_retrieveInboxPage", {"page" : paginationMax} ) }}" onClick="goToSyskPage( this )"><i class="fa fa-angle-double-right"></i></a>
+			{% endif %}
+		</td>
+	</tr>
+</tfoot>

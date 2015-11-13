@@ -1,0 +1,7 @@
+services:
+    sysk.alert.widget:
+        class: SYSK\AlertBundle\Widget\UserMessageAlertWidget
+        arguments: ["@doctrine.orm.entity_manager", "@security.context", "@session", "@twig", "SYSKAlertBundle:Widget:userAlert.html.twig"]
+    sysk.history.widget:
+        class: SYSK\AlertBundle\Widget\UserHistoryWidget
+        arguments: ["@doctrine.orm.entity_manager", "@security.context", "@session", "@twig", "SYSKAlertBundle:Widget:userHistory.html.twig"]

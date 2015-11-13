@@ -1,0 +1,31 @@
+#sysk_alert_historypage:
+    #path:     /history
+    #defaults: { _controller: SYSKAlertBundle:SYSK:history }
+
+sysk_alert_indexInbox:
+    path:     /indexInbox
+    defaults: { _controller: SYSKAlertBundle:SYSK:indexInbox }
+
+sysk_alert_sendSYSK:
+    path:     /sendSYSK
+    defaults: { _controller: SYSKAlertBundle:SYSK:sendSYSKMessage }
+
+sysk_alert_allMessages:
+    path:     /allSYSKMessages
+    defaults: { _controller: SYSKAlertBundle:SYSK:getAllSYSKMessages }
+
+sysk_alert_randomMessage:
+    path:     /randomSYSKMessage
+    defaults: { _controller: SYSKAlertBundle:SYSK:getRandomSYSKMessage }
+
+sysk_alert_indexOutbox:
+    path:     /indexOutbox
+    defaults: { _controller: SYSKAlertBundle:SYSK:indexOutbox }
+
+sysk_alert_validateReceiver:
+    path:     /validateReceiver
+    defaults: { _controller: SYSKAlertBundle:SYSK:validateSYSKReceiverRequest }
+
+sysk_alert_retrieveInboxPage:
+    path:     /retrieveInboxPage/{page}
+    defaults: { _controller: SYSKAlertBundle:SYSK:retrieveReadInboxPage }

@@ -1,0 +1,8 @@
+<p><i class="fa fa-exclamation-circle alert-error" ></i> Une erreur est survenue pendant le processus.</p>
+{% if messages|length > 0 %}
+	<ul class="content-list">
+		{% for message in messages %}
+			<li>{{ message }}</li>
+		{% endfor %}
+	</ul>
+{% endif %}

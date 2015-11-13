@@ -1,0 +1,34 @@
+<div class="allReceived">
+	<table>
+		<tr>
+			<th class="firstElement"><h4>Avis Positif</h4></th>
+			<th><h4>Irritant</h4></th>
+		</tr>
+		<tr>
+			<td class="firstElement">
+				{% if arrayMessages["POSITIVE"]|length > 0 %}
+					<ul class="sysk-messages">
+						{% for message in arrayMessages["POSITIVE"] %}
+							{% if message.messageText %}
+								<li>{{ message.messageText }}</li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				{% else %}
+					<div class="empty">Aucun Message Trouvé</div>
+				{% endif %}
+			</td>
+			<td>
+				{% if arrayMessages["NEGATIVE"]|length > 0 %}
+					<ul class="sysk-messages">
+						{% for message in arrayMessages["NEGATIVE"] %}
+							<li>{{ message.irritantId.irritantMessage }}</li>
+						{% endfor %}
+					</ul>
+				{% else %}
+					<div class="empty">Aucun Message Trouvé</div>
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+</div>

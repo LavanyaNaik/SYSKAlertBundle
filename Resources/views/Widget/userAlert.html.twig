@@ -1,0 +1,21 @@
+<div class="sysk-widget">
+	<table border=0 cellpadding=0 cellspacing=0>
+		<tr>
+			<td class="lbl-column">
+				<strong>SYSK</strong>
+				<div class="tkn-counter"><strong>{{ token_count }}</strong> tokens</div>
+			</td>
+			<td class="receiver-column">
+				{% if hasNewMessages == true %}
+					{% include 'SYSKAlertBundle:Widget:Block/sysk-received-block.html.twig' %}
+				{% else %}
+					{% include 'SYSKAlertBundle:Widget:Block/sysk-nonereceived-block.html.twig' %}
+				{% endif %}
+			</td>
+			<td class="sender-column">
+				<input type="image" src="{{ asset('bundles/syskalert/images/messageSenderIcon.png') }}" id="outbox-button" class="sender-button" alt="Post Message" data-url="{{ path( "sysk_alert_indexOutbox" ) }}" onClick="openOutbox()" />
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="sysk-body" class="sysk-body" title=""></div>

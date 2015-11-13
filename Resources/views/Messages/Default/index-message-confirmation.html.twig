@@ -1,0 +1,29 @@
+<table cellspacing=0 cellpadding=0>
+	<tr>
+		<td colspan=2>Vous avez <strong>{{ tokens }}</strong> token{% if tokens != 1 %}s{% endif %}.</td>
+	</tr>
+	{% if tokens > 0 %}
+		<tr>
+			<td colspan=2>Vous pouvez:</td>
+		</tr>
+		<tr>
+			<td class="labelcolumn"><i class="fa fa-circle"></i>dépenser <strong>1</strong> token pour lire un message aléatoire </td>
+			<td class="buttoncolumn">
+				<input id="spend1token" type="button" value="Dépenser" onClick="openRandomSYSK()" data-url="{{ path( "sysk_alert_randomMessage" ) }}" />
+			</td>
+		</tr>
+		{% if tokens < 3 %}
+			<tr>
+				<td colspan=2><i class="fa fa-circle"></i>garder vos tokens. Avec <strong>3</strong> tokens, vous pouvez lire tous vos messages.</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td class="labelcolumn"><i class="fa fa-circle"></i>dépenser <strong>3</strong> tokens pour lire tous vos messages </td>
+				<td class="buttoncolumn">
+					<input id="spend3tokens" type="button" value="Dépenser" onClick="openAllSYSK()" data-url="{{ path( "sysk_alert_allMessages" ) }}" />
+				</td>
+			</tr>
+		{% endif %}
+		
+	{% endif %}
+</table>

@@ -1,0 +1,403 @@
+.sysk-widget{
+	position: absolute;
+	right: 300px;
+	top: 0px;
+	width: 160px;
+	background-color: #FFF;
+	padding:3px 5px;
+	color: #5B9BD5;
+	border-bottom: solid 1px #5B9BD5; 
+	border-left: solid 1px #5B9BD5; 
+	border-right: solid 1px #5B9BD5; 
+	
+	-moz-border-bottom-left-radius:4px;
+	-moz-border-bottom-right-radius:4px;
+	-webkit-border-bottom-left-radius:4px;
+	-webkit-border-bottom-right-radius:4px;
+	border-bottom-left-radius:4px;
+	border-bottom-right-radius:4px;
+
+	-moz-box-shadow: 2px 2px 5px #aaa;
+	-webkit-box-shadow: 2px 2px 5px #aaa;
+	box-shadow: 2px 2px 5px #aaa;
+}
+
+.sysk-widget table{
+	background-color: transparent;
+	width: 100%;
+}
+
+.sysk-widget table td{
+	text-align: center;
+}
+
+.sysk-widget table td.lbl-column{
+	width:50px; 
+	vertical-align: middle;
+}
+
+.sysk-widget table td.lbl-column .tkn-counter{
+	font-size:13px;
+	color:#666;
+}
+
+.sysk-widget table td.receiver-column{
+	width:65px; 
+	vertical-align: top;
+}
+
+.sysk-widget table td.receiver-column .receiver-button{
+	border: 1px solid #CFCFCF;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.sysk-widget table td.receiver-column .receiver-new{
+	color: #12B312;
+	font-size: 12px;
+}
+
+.sysk-widget table td.receiver-column .receiver-none{
+	color:#AE7454;
+	font-size:12px;
+}
+
+.sysk-widget table td.sender-column{
+	width:45px;
+	vertical-align: middle;
+}
+
+.sysk-widget table td.sender-column .sender-button{
+	border: 1px solid #CFCFCF; 
+	-moz-border-radius: 18px;
+	-webkit-border-radius: 18px;
+	border-radius: 18px;
+}
+
+.dialogClass{
+    margin:0 auto;
+}
+
+.sysk-body{ 
+	display: none;
+	min-width: 300px;
+	padding: 10px 15px !important;
+}
+
+.sysk-body table tr td{ 
+	vertical-align: middle;
+  	line-height: 28px;
+}
+
+.sysk-body table tr td i.fa-circle{ 
+	font-size: 6px;
+	color: #444;
+	margin-right: 4px;
+	margin-left: 4px;
+}
+
+.sysk-body table tr td.labelcolumn{ 
+	width: 80%;
+}
+
+.sysk-body table tr td.buttoncolumn{ 
+	text-align: right;
+	padding-right: 3px;
+}
+
+.sysk-body strong{ 
+	color: #395e7f;
+}
+
+.sysk-overlay{
+	background-color: #CCC;
+    background-image: none;
+    opacity: 0.35;
+}
+
+#syskUserChoice{
+	display: block;
+	max-height: 350px;
+	min-height: 350px;
+	height: 350px;
+	width: 550px;
+}
+
+#syskUserChoice .syskUserTable{
+	overflow:auto; 
+	max-height: 300px; 
+	width:550px; 
+	font-size: 10px; 
+	border: 1px solid #AAA; 
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#syskUserChoice .syskUserTable table{
+	width: 90%;
+}
+
+#syskUserChoice .syskUserTable table td{
+	width: 33%;
+}
+
+#syskUserChoice h3{
+	color: #395e7f;
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 20px;
+	margin: 5px 0;
+}
+
+#syskTypeChoice{
+	display: none;
+	max-height: 75px;
+	min-height: 75px;
+	height: 75px;
+	width: 550px;
+}
+
+#syskTypeChoice .choiceTable{
+	width: 100%;
+  	border-bottom: 1px solid #999;
+  	margin-bottom: 10px;
+}
+
+#syskTypeChoice .choiceTable td{
+	line-height: 25px;
+}
+
+#syskTypeChoice .choiceTable td.returnButton{
+	text-align: right;
+}
+
+#syskTypeChoice .choiceTable td.returnButton input[type="button"]{
+	border: 0;
+	background-color: transparent;
+	color: #395e7f;
+	text-transform: uppercase;
+	font-size: 9px;
+	font-weight: bold;
+}
+
+#syskTypeChoice .choiceTable td.tableMessage{
+	color: #333;
+	font-weight: bold;
+	font-size: 13px;
+	text-align: center;
+}
+
+#syskTypeChoice .choiceTable td.tableInput{
+	text-align: center;
+}
+
+#syskTypeChoice .choiceTable td.tableInput div.firstElement{
+	text-align: left;
+	line-height: 20px;
+	font-size: 11px;
+	width: 250px;
+	float: left;
+}
+
+#syskTypeChoice .choiceTable td.tableInput div.lastElement{
+	text-align: right;
+	line-height: 20px;
+	font-size: 11px;
+	width: 250px;
+	float: right;
+}
+
+#syskTypeChoice .choiceTable td.tableInput label{
+	height: 20px;
+  	vertical-align: middle;
+  	margin-left: 5px;
+  	margin-right: 5px;
+}
+
+#syskTypeChoice .choiceTable td.tableInput .fa-cloud{
+	color: #38479A;
+}
+
+#syskTypeChoice .choiceTable td.tableInput .fa-certificate{
+	color: #fbac13;
+}
+
+#syskTypeChoice .choiceTable td.tableInput input{
+	height: 20px;
+  	vertical-align: middle;
+  	margin: 0;
+}
+
+#syskPositifChoice, #syskNegatifChoice{
+	display: none;
+	max-height: 200px;
+	min-height: 200px;
+	height: 200px;
+	width: 550px;
+}
+
+#syskPositifChoice h4, #syskNegatifChoice h4{
+	font-size: 14px;
+	color: #395e7f;
+	text-transform: uppercase;
+	margin: 5px 0;
+}
+
+#syskPositifChoice .choiceLabel, #syskNegatifChoice .choiceLabel{
+	width: 100%;
+	padding: 3px 0;
+
+}
+
+#syskPositifChoice .choiceWidget, #syskNegatifChoice .choiceWidget{
+	width: 100%;
+	box-sizing: border-box;
+	padding: 5px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #999;
+}
+
+#syskPositifChoice .choiceWidget textarea, #syskNegatifChoice .choiceWidget textarea{
+	width: 90%;
+	height: 100px;
+}
+
+#syskPositifChoice .buttonLabel, #syskNegatifChoice .buttonLabel{
+	width: 100%;
+	text-align: right;
+}
+
+#syskNegatifChoice .irritant-messages{
+	list-style-type: none;
+	font-size: 15px;
+	font-style: italic;
+	padding-left: 10px;
+	font-family: Times sans-serif;
+}
+
+#syskNegatifChoice #form_negatifComment{
+	width: 80%;
+}
+
+.sysk-messages{
+	font-size: 12px;
+	font-style: italic;
+	padding-left: 10px;
+	font-family: Times sans-serif;
+	padding: 0px 0px 0px 10px;
+	margin: 0px 0px 0px 15px;
+}
+
+#syskNegatifChoice ul.irritant-messages li{
+	display: none;
+}
+
+.hideClass{ display: none; }
+
+.allReceived{
+	width:500px;
+}
+
+.allReceived table{
+	width: 100%;
+}
+
+.allReceived table th{
+	width:50%; 
+	border-bottom: solid 1px #999; 
+}
+
+.allReceived table td{
+	width:50%;
+}
+
+.allReceived table th.firstElement,
+.allReceived table td.firstElement{
+	border-right: solid 1px #999;
+}
+
+.allReceived h4{
+	padding: 5px;
+	margin: 0;
+	color: #395e7f;
+	font-size: 12px;
+}
+
+.allReceived .empty{
+	text-align: center;
+	color: #999;
+}
+
+.alert-error{
+	color:red;
+}
+
+.receiver-none{
+	color: #AE7454;
+	font-size: 12px;
+}
+
+.receiver-new{
+	color: #12B312;
+	font-size: 12px;
+}
+
+.syskPagination{
+	font-size: 13px;
+	text-align: right;
+	background-color: #eee;
+}
+
+.syskPagination a{
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.syskPagination a:hover{
+	text-decoration: none;
+}
+
+.sysk-history{
+	width: 80%;
+}
+
+.sysk-history table#sysk-historyTable{
+	width: 80%;
+	border-collapse: collapse;
+	border: 1px solid #AAA;
+}
+
+.sysk-history table#sysk-historyTable th{
+	font-weight: bold;
+	color: #FF358B !important;
+	text-align: center;
+	border: 1px solid #AAA;
+	line-height: 20px;
+	padding: 5px 3px;
+	font-size: 15px;
+}
+
+.sysk-history table#sysk-historyTable th.sysk-tbMessage{
+	width: 50%;
+}
+
+.sysk-history table#sysk-historyTable th.sysk-tbType{
+	width: 30%;
+}
+
+.sysk-history table#sysk-historyTable th.sysk-tbDate{
+	width: 20%;
+}
+
+.sysk-history table#sysk-historyTable td {
+	border: 1px solid #AAA;
+	line-height: 18px;
+	padding: 5px 3px;
+	font-size: 13px;
+}
+
+.sysk-history table#sysk-historyTable td.centered{
+	text-align: center;
+}
