@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use SYSK\AlertBundle\Entity\SyskIrritant;
 
 /**
- * This command is called by request to create the employer certification
+ * This command is called by request to create the base data for the application
  */
 class CreateBaseIrritantsCommand extends ContainerAwareCommand
 {
@@ -143,7 +143,7 @@ class CreateBaseIrritantsCommand extends ContainerAwareCommand
 
         $element = array();
         $element["token"]   = "NOT_COMMUNICATION";
-        $element["message"] = "Si tu me dis qu’il est topissime, embauches le";
+        $element["message"] = "Si tu me dis qu’il est topissime, embauche le";
         $baseArray[] = $element;
 
         return $baseArray;

@@ -54,10 +54,12 @@ class SYSKController extends Controller
 	    		$typesArray[ SyskMessage::TYPE_NEGATIVE ] = "Something You Should Know";
 
 	    		$irritants 	= array();
+	    		$baseData 	= NULL;
 	    		$irritantMessages 	= array();
 	    		foreach ( $syskIrritantRepository->findByDeleted( false ) as $irr ) {
-	    			$irritants[ $irr->getId() ] = $irr->getIrritantMessage();
-	    			$irritantMessages[ $irr->getId() ] = $irr->getIrritantMessage();
+	    			$irritants[ $irr->getId() ] 		= $irr->getIrritantMessage();
+	    			if( $baseData == NULL ){ $baseData = $irr->getId(); }
+	    			$irritantMessages[ $irr->getId() ]	= $irr->getIrritantMessage();
 	    		}
 
 
@@ -75,13 +77,15 @@ class SYSKController extends Controller
 			    													"expanded" 	=> true,
 			    													"data" 		=> SyskMessage::TYPE_POSITIVE
 			    													) )
-	    					 ->add( 'positifComment', 'textarea', array( "required" => true,
-	    					 											 "label" 	=> "Donne un avis positif à un de tes collègues. (chaque SYSK te donne droit à 1 token)" ) )
-	    					 ->add( 'negatifComment', 'choice', array( 	"choices" 	=> $irritants, 
-	    					 											"label" 	=> "Une remarque et un truc énervant d'un de tes collègues (chaque SYSK te donne droit à 1 token)." ,
-			    														"required" 	=> false,
-			    														"multiple" 	=> false,
-			    														"expanded" 	=> false ) )
+	    					 ->add( 'positifComment', 'textarea', array( "required" 	=> true,
+	    					 											 "label" 		=> "Donne un avis positif à un de tes collègues. (chaque SYSK te donne droit à 1 token)" ) )
+	    					 ->add( 'negatifComment', 'choice', array( 	"choices" 		=> $irritants,
+	    					 											"placeholder" 	=> FALSE,
+	    					 											"empty_data" 	=> $baseData, 
+	    					 											"label" 		=> "Une remarque et un truc énervant d'un de tes collègues (chaque SYSK te donne droit à 1 token)." ,
+			    														"required" 		=> false,
+			    														"multiple" 		=> false,
+			    														"expanded" 		=> false ) )
 	    					 ->getForm();
 
     			$params["status"] 		= "success";
@@ -145,8 +149,11 @@ class SYSKController extends Controller
 
 	    		$irritants 		 = array();
 	    		$irritantObjects = array();
+	    		$baseData 		 = NULL;
+
 	    		foreach ( $syskIrritantRepository->findByDeleted( false ) as $irr ) {
 	    			$irritants[ $irr->getId() ] 		= $irr->getIrritantMessage();
+	    			if( $baseData == NULL ){ $baseData = $irr->getId(); }
 	    			$irritantObjects[ $irr->getId() ] 	= $irr;
 	    		}
 
@@ -164,13 +171,15 @@ class SYSKController extends Controller
 			    													"expanded" 	=> true,
 			    													"data" 		=> SyskMessage::TYPE_POSITIVE
 			    													) )
-	    					 ->add( 'positifComment', 'textarea', array( "required" => true,
-	    					 											 "label" 	=> "Envoyer un commentaire positif vers un collaborateur. Plus, chaque SYSK vous donne 1 token!!!") )
-	    					 ->add( 'negatifComment', 'choice', array( 	"choices" 	=> $irritants, 
-	    					 											"label" 	=> "Irrité d'une actitude d'un collaborateur? Choissisez un message de la liste, et envoyer le. Plus, chaque SYSK vous donne 1 token!!!" ,
-			    														"required" 	=> false,
-			    														"multiple" 	=> false,
-			    														"expanded" 	=> false ) )
+	    					 ->add( 'positifComment', 'textarea', array( "required" 	=> true,
+	    					 											 "label" 		=> "Envoyer un commentaire positif vers un collaborateur. Plus, chaque SYSK vous donne 1 token!!!") )
+	    					 ->add( 'negatifComment', 'choice', array( 	"choices" 		=> $irritants,
+	    					 											"placeholder" 	=> FALSE,
+	    					 											"empty_data" 	=> $baseData, 
+	    					 											"label" 		=> "Irrité d'une actitude d'un collaborateur? Choissisez un message de la liste, et envoyer le. Plus, chaque SYSK vous donne 1 token!!!" ,
+			    														"required" 		=> false,
+			    														"multiple" 		=> false,
+			    														"expanded" 		=> false ) )
 	    					 ->getForm();
 
 	    		$form->submit( $request );
@@ -190,7 +199,7 @@ class SYSKController extends Controller
 	    				$typeFlag--;
 	    			}else{
 	    				$message->setMessageType( SyskMessage::TYPE_POSITIVE );
-	    				$message->setMessageText( $data[ "positifComment" ] );
+	    				$message->setMessageText( nl2br($data[ "positifComment" ]) );
 	    				$typeFlag++;
 	    			}
 
@@ -386,6 +395,8 @@ class SYSKController extends Controller
 			       		if( $syskMessage->getMessageType() == SyskMessage::TYPE_POSITIVE ){
 			       			$arrayMessages[ SyskMessage::TYPE_POSITIVE ][] = $syskMessage;
 			       		}else{
+			       			if( $syskMessage->getIrritantId() == NULL )
+			       				continue;
 			       			$arrayMessages[ SyskMessage::TYPE_NEGATIVE ][] = $syskMessage;
 			       		}
 		       		}
@@ -439,8 +450,8 @@ class SYSKController extends Controller
 	        		$params["allowed"] 	= false;
 	        	}else{
 	        		$now = new \DateTime( "NOW" );
-	        		$fom = new \DateTime( $now->format("y-m-01") );
-	        		$lom = new \DateTime( $now->format("y-m-t") );
+	        		$fom = new \DateTime( $now->format("y-m-01 00:00:00") );
+	        		$lom = new \DateTime( date( "Y-m-t", strtotime( $now->format("y-m-01 00:00:00") ) )." 23:59:59" );
 	        		$pnRatio = 0;
 
 	        		foreach ($syskMsgs as $key => $message ) {
@@ -458,6 +469,7 @@ class SYSKController extends Controller
 	        		}else{
 	        			$params["allowed"] 	= false;
 	        		}
+	        		$params["ratio"] = $pnRatio;
 	        	}
 	        }
     	} catch (\Exception $e) {
@@ -469,15 +481,18 @@ class SYSKController extends Controller
     	return new JsonResponse( $params );
     }
 
+    // route : sysk_alert_retrieveInboxPage
     public function retrieveReadInboxPageAction( Request $request, $page ){
     	$em 		= $this->getDoctrine()->getManager();
-    	$pageMax 	= 20;
+    	$pageMax 	= $this->getParameter('sysk_base_table_max');
     	$params 	= array();
     	$syskMessages = array();
+    	$paginationMax = 1;
 
     	// Retrieve the user based on the security Context
     	try {
     		$user = $this->get('security.context')->getToken()->getUser();
+    		$form = $this->createForm("sysk_alert_search");
 	        $syskUserRepository = $em->getRepository('SYSKAlertBundle:SyskUser');
 	        $syskMsgRepository  = $em->getRepository('SYSKAlertBundle:SyskMessage');
 
@@ -496,37 +511,96 @@ class SYSKController extends Controller
 	                                                                    "status"    => SyskMessage::STATUS_READ,
 	                                                                    "deleted"   => false ) );
 
-	            foreach ( $syskMessagesDB as $messDB ) {
-	                $element = array();
-	                if( $messDB->getMessageType() == SyskMessage::TYPE_POSITIVE ){
-	                    $element["message"] = $messDB->getMessageText();
-	                    $element["type"] = "Feedback positif";
-	                }elseif( $messDB->getMessageType() == SyskMessage::TYPE_NEGATIVE ){
-	                    $element["message"] = $messDB->getIrritantId()->getIrritantMessage();
-	                    $element["type"] = "Something You Should Know";
-	                }else{
-	                    continue;
-	                }
-	                
-	                $element["created"] = $messDB->getCreatedAt()->format("d/m/Y");
-
-	                $syskMessages[] = $element;
+	            if ( $request->isMethod('post') )
+	            {
+	            	$form->submit( $request );
 	            }
 
-	            if( count( $allSyskMessagesDB ) > $pageMax ){
-	                $paginationMax = floor( count($allSyskMessagesDB)/$pageMax) + 
-	                                 ( ( count($allSyskMessagesDB)%$pageMax == 0 )? 0 : 1 ) ;
+	            if( $form->isValid() )
+	            {
+	            	$data = $form->getData();
+
+	            	$varType = $data["type"];
+	            	$varStartDate 	= $data["startDt"];
+	            	$varEndDate 	= $data["endDt"];
+
+	            	if( ($varStartDate != NULL && $varEndDate != NULL  && $varStartDate <= $varEndDate ) || 
+	            		($varStartDate == NULL && $varEndDate == NULL) )
+	            	{
+		            	foreach ( $syskMessagesDB as $messDB ) 
+		            	{
+			                $element = array();
+			                if( $messDB->getMessageType() == SyskMessage::TYPE_POSITIVE ){
+			                    $element["message"] = $messDB->getMessageText();
+			                    $element["type"] = "Feedback positif";
+			                }elseif( $messDB->getMessageType() == SyskMessage::TYPE_NEGATIVE ){
+			                	if( $messDB->getIrritantId() === NULL )
+			                		continue;
+			                    $element["message"] = $messDB->getIrritantId()->getIrritantMessage();
+			                    $element["type"] = "Something You Should Know";
+			                }else{
+			                    continue;
+			                }
+			                
+			                if( $varType != NULL ){
+			                	if( $messDB->getMessageType() != $varType ){
+			                		continue;
+			                	}
+			                }
+
+			                if( $varStartDate != NULL && $varEndDate != NULL ){
+			                	$formStartDate 	= new \DateTime( $varStartDate->format("Y-m-d")." 00:00:00" );
+								$formEndDate 	= new \DateTime( $varEndDate->format("Y-m-d")." 23:59:59" );
+
+								if( $messDB->getCreatedAt() < $formStartDate ||
+									$messDB->getCreatedAt() > $formEndDate ){
+									continue;
+								}
+			                }elseif( $varStartDate == NULL && $varEndDate != NULL ){
+			                	$formEndDate 	= new \DateTime( $varEndDate->format("Y-m-d")." 23:59:59" );
+			                	if( $messDB->getCreatedAt() > $formEndDate ){
+			                		continue;
+			                	}
+			                }elseif( $varStartDate != NULL && $varEndDate == NULL ){
+			                	$formStartDate 	= new \DateTime( $varStartDate->format("Y-m-d")." 00:00:00" );
+			                	if( $messDB->getCreatedAt() < $formStartDate ){
+			                		continue;
+			                	}
+			                }
+
+			                $element["created"] = $messDB->getCreatedAt()->format("d/m/Y");
+
+			                $syskMessages[] = $element;
+			            }
+
+			            if( count( $allSyskMessagesDB ) > $pageMax ){
+			                $paginationMax = floor( count($allSyskMessagesDB)/$pageMax) + 
+			                                 ( ( count($allSyskMessagesDB)%$pageMax == 0 )? 0 : 1 ) ;
+			            }
+
+			            $templateName = 'SYSKAlertBundle:Widget:Block/sysk-historyTable-block.html.twig';
+				        $options = array( 	"syskMessages"  => $syskMessages,
+				            				"empty_message" => "Aucun message trouvé.",
+				            				"paginationMax" => $paginationMax,
+				            				"actualPage"    => $page );
+
+				        $params["status"] 		= "success";
+				        $params["responseHtml"] = $this->renderView( $templateName, $options );
+				    }else{
+	            		$params["status"] 	= "error";
+	            		if( $varStartDate == NULL ){
+				    		$params["responseHtml"] = "Filtre Invalide. Date de début requis.";
+				    	}elseif( $varEndDate == NULL ) {
+				    		$params["responseHtml"] = "Filtre Invalide. Date de fin requis.";
+				    	}elseif( $varStartDate > $varEndDate ){
+				    		$params["responseHtml"] = "Filtre Invalide. Date de fin doit être inférieure a la date de début.";
+				    	}
+	            	}
+	            }else{
+	            	$params["status"] 	= "error";
+	            	$params["responseHtml"] = "Filtre Invalide";
 	            }
 	        }
-
-	        $templateName = 'SYSKAlertBundle:Widget:Block/sysk-historyTable-block.html.twig';
-	        $options = array( 	"syskMessages"  => $syskMessages,
-	            				"empty_message" => "Aucun message trouvé.",
-	            				"paginationMax" => $paginationMax,
-	            				"actualPage"    => $page );
-
-	        $params["status"] 		= "success";
-	        $params["responseHtml"] = $this->renderView( $templateName, $options );
     	} catch (\Exception $e) {
         	$params["status"] 	= "error";
         	$params["responseHtml"] = $this->renderView('SYSKAlertBundle:Messages:Default/index-message-error.html.twig',
@@ -534,5 +608,214 @@ class SYSKController extends Controller
     	}
 
     	return new JsonResponse( $params );
+    }
+
+    // route : sysk_alert_retrieveManagerInboxPage
+    public function retrieveManagerInboxPageAction( Request $request, $page ){
+    	$em 		= $this->getDoctrine()->getManager();
+    	$pageMax 	= $this->getParameter('sysk_base_table_max');
+    	$paginationMax = 1;
+    	$params 	= array();
+    	$syskMessages = array();
+
+    	// Retrieve the user based on the security Context
+    	try {
+    		$user = $this->get('security.context')->getToken()->getUser();
+    		$form = $this->createForm("sysk_alert_search_manager");
+
+	        $syskUserRepository = $em->getRepository('SYSKAlertBundle:SyskUser');
+	        $syskMsgRepository  = $em->getRepository('SYSKAlertBundle:SyskMessage');
+	        $bridgeServiceName 	= $this->getParameter('user_information_service');
+
+	        $bridgeService 	= $this->get( $bridgeServiceName );
+	        $syskUser 		= $syskUserRepository->findOneBy( array( "userId" => $user->getId() ) );
+
+	        if( $syskUser )
+	        {
+	        	$result     = array();
+                $children   = $bridgeService->retrieveSYSKManagerUsers( $user->getId() );
+
+                foreach ($children as $key => $child) {
+                    $result = $this->buildChildEntry( $result, $child );
+                }
+
+                $extraHeaders = array();
+
+                if ( $request->isMethod('post') )
+	            {
+	            	$form->submit( $request );
+	            }
+
+	            if( $form->isValid() )
+	            {
+	            	$data = $form->getData();
+
+	            	$varName = array();
+	            	$names = json_decode( $data["name_array"] );
+	            	if( $names && $names != "" ){
+	            		foreach ( json_decode( $data["name_array"] ) as $key => $ret ) {
+		            		$varName[] = strtoupper( $ret );
+		            	}
+	            	}
+	            	
+	            	$varType = $data["type"];
+	            	$varStartDate 	= $data["startDt"];
+	            	$varEndDate 	= $data["endDt"];
+	            	
+	            	if( ($varStartDate != NULL && $varEndDate != NULL  && $varStartDate <= $varEndDate ) || 
+	            		($varStartDate == NULL && $varEndDate == NULL) )
+	            	{
+						foreach ($result as $key => $child) {
+							// Retrieve all messages
+							$syskMessagesDB = $syskMsgRepository->findBy(array( "receiver"  => $child["syskUser"],
+							                                                    "deleted"   => false ),
+							                                            array(  "createdAt" => "DESC" ));
+							if( count( $syskMessagesDB ) <= 0 ){
+							    continue;
+							}
+
+							// Retrieve all extra headers for columns
+							foreach( $child["extras"] as $xtrKey => $xtrValue ) {
+							    if( !array_key_exists( $xtrKey, $extraHeaders ) ){
+							        $extraHeaders[ $xtrKey ] = $xtrValue["label"];
+							    }
+							}
+
+							foreach ( $syskMessagesDB as $msgKey => $msgValue )
+							{
+							    $element = array();
+
+							    $element["name"] = $child["firstName"]." ".$child["lastName"];
+
+							    if( $msgValue->getMessageType() == SyskMessage::TYPE_POSITIVE ){
+							        $element["message"] = $msgValue->getMessageText();
+							        $element["type"]    = "Feedback positif";
+							    }elseif( $msgValue->getMessageType() == SyskMessage::TYPE_NEGATIVE ){
+							    	if( $msgValue->getIrritantId() === NULL )
+									continue;
+							        $element["message"] = $msgValue->getIrritantId()->getIrritantMessage();
+							        $element["type"]    = "Something You Should Know";
+							    }else{
+							        continue;
+							    }
+
+							    if( count($varName) > 0 ){
+							    	if( in_array( strtoupper( $element["name"] ), $varName ) === FALSE ){
+							    		continue;
+							    	}
+							    }
+
+							    if( $varType != NULL ){
+							    	if( $msgValue->getMessageType() != $varType ){
+							    		continue;
+							    	}
+							    }
+
+							    if( $varStartDate != NULL && $varEndDate != NULL ){
+							    	$formStartDate 	= new \DateTime( $varStartDate->format("Y-m-d")." 00:00:00" );
+									$formEndDate 	= new \DateTime( $varEndDate->format("Y-m-d")." 23:59:59" );
+
+							    	if( $msgValue->getCreatedAt() < $formStartDate ||
+							    		$msgValue->getCreatedAt() > $formEndDate ){
+							    		continue;
+							    	}
+							    }elseif( $varStartDate == NULL && $varEndDate != NULL ){
+									$formEndDate 	= new \DateTime( $varEndDate->format("Y-m-d")." 23:59:59" );
+
+							    	if( $msgValue->getCreatedAt() > $formEndDate ){
+							    		continue;
+							    	}
+							    }elseif( $varStartDate != NULL && $varEndDate == NULL ){
+							    	$formStartDate 	= new \DateTime( $varStartDate->format("Y-m-d")." 00:00:00" );
+
+							    	if( $msgValue->getCreatedAt() < $formStartDate ){
+							    		continue;
+							    	}
+							    }
+
+							    $element["status"]  = ( $msgValue->getStatus() == SyskMessage::STATUS_READ )? "Lu" : "Non-lu";
+							    $element["created"] = $msgValue->getCreatedAt()->format("d/m/Y");
+							    $element["extras"]  = $child["extras"];
+
+							    $syskMessages[] = $element;
+							}
+						}
+
+						if( count( $syskMessages ) > $pageMax ){
+				            $paginationMax = floor( count($syskMessages)/$pageMax) + 
+				                             ( ( count($syskMessages)%$pageMax == 0 )? 0 : 1 ) ;
+				        }
+
+				        $syskMessagesReturn = array();
+				        $index = 1;
+
+				        foreach ( $syskMessages as $message ) {
+				            if( $index > ($page-1)*$pageMax && $index <= ($page)*$pageMax ){
+				                $syskMessagesReturn[] = $message;
+				            }
+				            $index++;
+				        }
+
+		                $templateName = 'SYSKAlertBundle:Widget:Block/sysk-managerTable-block.html.twig';
+				        $options = array( 	"syskMessages"  => $syskMessagesReturn,
+				        					"extraHeaders"  => $extraHeaders,
+				            				"empty_message" => "Aucun message trouvé.",
+				            				"paginationMax" => $paginationMax,
+				            				"actualPage"    => $page );
+
+				        $params["status"] 		= "success";
+				        $params["responseHtml"] = $this->renderView( $templateName, $options );
+	            	}else{
+	            		$params["status"] 	= "error";
+	            		if( $varStartDate == NULL ){
+				    		$params["responseHtml"] = "Filtre Invalide. Date de début requis.";
+				    	}elseif( $varEndDate == NULL ) {
+				    		$params["responseHtml"] = "Filtre Invalide. Date de fin requis.";
+				    	}elseif( $varStartDate > $varEndDate ){
+				    		$params["responseHtml"] = "Filtre Invalide. Date de fin doit être inférieure a la date de début.";
+				    	}
+	            	}
+	            }else{
+	            	$params["status"] 	= "error";
+	            	$params["responseHtml"] = "Filtre Invalide";
+	            }
+	        }else{
+	        	$params["status"] 		= "error";
+		        $params["responseHtml"] = "Aucun utilisateur trouvé.";
+	        }
+    	} catch (\Exception $e) {
+        	$params["status"] 	= "error";
+        	$params["responseHtml"] = $this->renderView('SYSKAlertBundle:Messages:Default/index-message-error.html.twig',
+        													array( "messages" => array( $e->getMessage() ) ) );
+    	}
+
+    	return new JsonResponse( $params );
+    }
+
+    private function buildChildEntry( $result, $child )
+    {
+    	$em = $this->getDoctrine()->getManager();
+        $syskUserRepository = $em->getRepository('SYSKAlertBundle:SyskUser');
+
+        $syskUser = $syskUserRepository->findOneBy( array( "userId" => $child["userId"] ) );
+
+        if( $syskUser ){
+            $element    = array();
+            $element["syskUser"]    = $syskUser;
+            $element["userId"]      = $child["userId"];
+            $element["firstName"]   = $child["firstName"];
+            $element["lastName"]    = $child["lastName"];
+            $element["extras"]      = $child["extras"];
+
+            $result[] = $element;
+
+            if( count( $child["children"] > 0 ) ){
+                foreach ( $child["children"] as $k => $c ) {
+                    $result = $this->buildChildEntry( $result, $c );
+                }
+            }
+        }
+
+        return $result;
     }
 }

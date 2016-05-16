@@ -252,23 +252,50 @@ function openAllSYSK(){
 }
 
 function goToSyskPage( element ){
+    var tableId         = $( element ).closest('table').attr("id");
+    var responseTable   = "sysk-historyTable";
+    var tableErrorsId   = "sysk_errors";
+    var formTable       = "filterHistoryForm";
+
+    if( tableId != "sysk-historyTable" && tableId != "sysk-historySearch" ){
+        tableErrorsId   = "sysk_manager_errors";
+        responseTable   = "sysk-managerTable";
+        formTable       = "filterManagerForm";
+        $("#"+formTable+" #sysk_alert_search_manager_name_array").val(
+            JSON.stringify( $("#"+formTable+" #sysk_alert_search_manager_name").val() ) );
+    }
+    
     var dataUrl = $( element ).attr("data-url");
 
     $.ajax({
         type    : "POST",
         url     : dataUrl,
+        data    : $( "#"+formTable ).serialize(),
         async   : false,
         success: function( data ){
-            console.log( data );
             if( data["status"] == "success" ){
-                $("#sysk_errors").html("");
-                $("#sysk-historyTable").html(data["responseHtml"]);
+                $( "#"+tableErrorsId ).html("");
+                $( "#"+responseTable ).html(data["responseHtml"]);
             }else{
-                $("#sysk_errors").html(data["responseHtml"]);
+                $( "#"+responseTable ).html("");
+                $( "#"+tableErrorsId ).html(data["responseHtml"]);
             }
         },
         error: function(data) {
-            $("#sysk_errors").html(data["responseHtml"]);
+            $( "#"+responseTable ).html("");
+            $( "#"+tableErrorsId ).html(data["responseHtml"]);
         }
     });
 }
+
+$(document).ready(function(){
+    $('.filterSyskDate').datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        dateFormat: "dd/mm/yy",
+    });
+
+    jQuery('.datepicker').datepicker('option', jQuery.extend(jQuery.datepicker.regional['fr']));
+
+    $(".select-sysk-ajax").select2();
+});

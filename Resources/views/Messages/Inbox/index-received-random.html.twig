@@ -2,7 +2,7 @@
 	<h4>SYSK Message : {% if message.messageType == "POSITIVE" %}Avis Positif{% else %}Irritant{% endif %}</h4>
 	<hr/>
 	{% if message.messageType == "POSITIVE" %}
-		<div>{{ message.messageText }}</div>
+		<div>{{ message.messageText|raw }}</div>
 	{% else %}
 		<div class="sysk-messages">« {{ message.irritantId.irritantMessage }} »</div>
 	{% endif %}

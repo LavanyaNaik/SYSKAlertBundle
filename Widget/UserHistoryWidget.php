@@ -8,9 +8,11 @@ use Twig_Environment;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 use SYSK\AlertBundle\Widget\UserWidget;
 use SYSK\AlertBundle\Entity\SyskMessage;
+use SYSK\AlertBundle\Form\WidgetSearchType;
 
 /**
  * User History widget
@@ -19,6 +21,7 @@ use SYSK\AlertBundle\Entity\SyskMessage;
  */
 class UserHistoryWidget extends UserWidget
 {
+    private $container;
     private $pageMax = 20;
 
     /**
@@ -27,9 +30,17 @@ class UserHistoryWidget extends UserWidget
      * @param Session             $session         Session.
      * @param Twig_Environment    $twig            Twig.
      */
-    public function __construct( EntityManager $em, SecurityContext $securityContext, Session $session, Twig_Environment $twig, $templateName )
+    public function __construct(    EntityManager $em, 
+                                    SecurityContext $securityContext, 
+                                    Session $session, 
+                                    Twig_Environment $twig, 
+                                    $templateName, 
+                                    Container $container,
+                                    $pageMax )
     {
         parent::__construct( $em, $securityContext, $session, $twig, $templateName );
+        $this->pageMax = $pageMax;
+        $this->container = $container;
     }
 
     /**
@@ -43,6 +54,7 @@ class UserHistoryWidget extends UserWidget
         $syskMessages   = array();
         // Retrieve the user based on the security Context
         $user = $this->securityContext->getToken()->getUser();
+        $form = $this->container->get('form.factory')->create( new WidgetSearchType() );
 
         $syskUserRepository = $this->em->getRepository('SYSKAlertBundle:SyskUser');
         $syskMsgRepository  = $this->em->getRepository('SYSKAlertBundle:SyskMessage');
@@ -68,6 +80,7 @@ class UserHistoryWidget extends UserWidget
                     $element["message"] = $messDB->getMessageText();
                     $element["type"] = "Feedback positif";
                 }elseif( $messDB->getMessageType() == SyskMessage::TYPE_NEGATIVE ){
+                    if( $messDB->getIrritantId() == NULL ) continue;
                     $element["message"] = $messDB->getIrritantId()->getIrritantMessage();
                     $element["type"] = "Something You Should Know";
                 }else{
@@ -86,6 +99,7 @@ class UserHistoryWidget extends UserWidget
         }
 
         return array(
+            "searchForm"    => $form->createView(),
             "syskMessages"  => $syskMessages,
             "empty_message" => "Aucun message trouvé.",
             "paginationMax" => $paginationMax,

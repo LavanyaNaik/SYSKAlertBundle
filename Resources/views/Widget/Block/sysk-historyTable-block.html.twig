@@ -6,12 +6,19 @@
 	</tr>
 </thead>
 <tbody>
-	{% for syskMessage in syskMessages %}
+	{% if syskMessages|length > 0 %}
+		{% for syskMessage in syskMessages %}
+			<tr>
+				<td>{{ syskMessage["message"]|raw }}</td>
+				<td class="centered">{{ syskMessage["type"] }}</td>
+				<td class="centered">{{ syskMessage["created"] }}</td>
+			</tr>
+		{% endfor %}
+	{% else %}
 		<tr>
-			<td>{{ syskMessage["message"] }}</td>
-			<td class="centered">{{ syskMessage["type"] }}</td>
-			<td class="centered">{{ syskMessage["created"] }}</td>
-	{% endfor %}
+			<td colspan="3" class="centered">{{ empty_message }}</td>
+		</tr>
+	{% endif %}
 </tbody>
 <tfoot>
 	<tr>

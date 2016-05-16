@@ -143,6 +143,11 @@
 	width: 33%;
 }
 
+#syskUserChoice .syskUserTable table td label{
+	color: #333 !important;
+	font-size: 10px !important;
+}
+
 #syskUserChoice h3{
 	color: #395e7f;
 	font-size: 13px;
@@ -180,6 +185,11 @@
 	text-transform: uppercase;
 	font-size: 9px;
 	font-weight: bold;
+}
+
+.receptorLabel{
+	color: #333 !important;
+	font-size: 12px !important;
 }
 
 #syskTypeChoice .choiceTable td.tableMessage{
@@ -363,13 +373,15 @@
 	width: 80%;
 }
 
-.sysk-history table#sysk-historyTable{
+.sysk-history table#sysk-historyTable,
+.sysk-history table#sysk-managerTable{
 	width: 80%;
 	border-collapse: collapse;
 	border: 1px solid #AAA;
 }
 
-.sysk-history table#sysk-historyTable th{
+.sysk-history table#sysk-historyTable th,
+.sysk-history table#sysk-managerTable th{
 	font-weight: bold;
 	color: #FF358B !important;
 	text-align: center;
@@ -391,13 +403,71 @@
 	width: 20%;
 }
 
-.sysk-history table#sysk-historyTable td {
+.sysk-history table#sysk-managerTable th.sysk-tbMessage{
+	width: 30%;
+}
+
+.sysk-history table#sysk-managerTable th.sysk-tbReceiver{
+	width: 20%;
+}
+
+.sysk-history table#sysk-managerTable th.sysk-tbType,
+.sysk-history table#sysk-managerTable th.sysk-tbStatus,
+.sysk-history table#sysk-managerTable th.sysk-tbDate{
+	width: 10%;
+}
+
+.sysk-history table#sysk-historyTable td,
+.sysk-history table#sysk-managerTable td{
 	border: 1px solid #AAA;
 	line-height: 18px;
 	padding: 5px 3px;
 	font-size: 13px;
 }
 
-.sysk-history table#sysk-historyTable td.centered{
+.sysk-history table#sysk-historyTable td.centered,
+.sysk-history table#sysk-managerTable td.centered{
 	text-align: center;
+}
+
+.sysk-search{
+	border: solid 1px #AAA;
+  	margin-bottom: 10px;
+  	width: 80%;
+}
+
+.sysk-search td{
+	font-size: 11px;
+	padding: 5px 5px 0 5px;
+}
+
+.sysk-search td input{
+	vertical-align: middle;
+	margin-bottom: 5px;
+}
+
+.sysk-search td select{
+	vertical-align: middle;
+	margin-bottom: 5px;
+	width: 125px;
+}
+
+.filterSyskDate{
+	width: 75px;
+}
+
+#sysk_errors, #sysk_manager_errors{
+	color: red;
+	font-size: 14px;
+	margin-top: 10px;
+}
+
+.select-sysk-ajax .select2-choices{
+	width: 250px;
+	min-width: 250px;
+	max-width: 250px;
+}
+
+.select2-results{
+	font-size: 11px !important;
 }

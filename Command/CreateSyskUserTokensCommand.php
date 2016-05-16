@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use SYSK\AlertBundle\Entity\SyskUser;
 
 /**
- * This command is called by request to create the employer certification
+ * This command is called by request to reset data for the application
  */
 class CreateSyskUserTokensCommand extends ContainerAwareCommand
 {

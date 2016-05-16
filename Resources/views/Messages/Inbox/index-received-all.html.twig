@@ -10,7 +10,7 @@
 					<ul class="sysk-messages">
 						{% for message in arrayMessages["POSITIVE"] %}
 							{% if message.messageText %}
-								<li>{{ message.messageText }}</li>
+								<li>{{ message.messageText|raw }}</li>
 							{% endif %}
 						{% endfor %}
 					</ul>

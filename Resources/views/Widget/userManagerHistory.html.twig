@@ -1,0 +1,31 @@
+<div class="sysk-history">
+	{% if syskMessages|length > 0 %}
+		<form id="filterManagerForm" action="POST">
+			<table border=0 cellpadding=0 cellspacing=0 id="sysk-managerSearch" class="sysk-search">
+				<tr>
+					<td>Nom/Prénom :</td>
+					<td>Type :</td>
+					<td>Date Début : (d/m/a)</td>
+					<td>Date Fin : (d/m/a)</td>
+					<td rowspan=2><input type="button" id="filterHistoryManagerTable" value="Filtrer" data-url="{{ path("sysk_alert_retrieveManagerInboxPage", {"page" : 1} ) }}" onclick="goToSyskPage(this)"/></td>
+				</tr>
+				<tr>
+					<td style="padding-bottom:5px; height: 35px;">{{ form_widget( searchForm.name ) }}</td>
+					<td>{{ form_widget( searchForm.type ) }}</td>
+					<td>{{ form_widget( searchForm.startDt ) }}</td>
+					<td>{{ form_widget( searchForm.endDt ) }}</td>
+				</tr>
+			</table>
+			<div style="display:none;">{{ form_rest( searchForm ) }}</div>
+		</form>
+
+		<table border=0 cellpadding=0 cellspacing=0 id="sysk-managerTable">
+			{% include 'SYSKAlertBundle:Widget:Block/sysk-managerTable-block.html.twig' 
+				with { 	'syskMessages' 	: syskMessages,
+						'extraHeaders' 	: extraHeaders,
+						'paginationMax' : paginationMax,
+            			'actualPage' 	: actualPage } %}
+		</table>
+	{% endif %}
+	<div id="sysk_manager_errors"></div>
+</div>

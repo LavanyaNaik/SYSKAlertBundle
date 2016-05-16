@@ -2,6 +2,23 @@
 	{% if syskMessages|length == 0 %}
 		<div class="sysk-disclaimer">{{ empty_message }}</div>
 	{% else %}
+		<form id="filterHistoryForm" action="POST">
+			<table border=0 cellpadding=0 cellspacing=0 id="sysk-historySearch" class="sysk-search">
+				<tr>
+					<td>Type :</td>
+					<td>Date Début : (d/m/a)</td>
+					<td>Date Fin : (d/m/a)</td>
+					<td rowspan=2><input type="button" id="filterHistoryTable" value="Filtrer" data-url="{{ path("sysk_alert_retrieveInboxPage", {"page" : 1} ) }}" onclick="goToSyskPage(this)"/></td>
+				</tr>
+				<tr>
+					<td>{{ form_widget( searchForm.type ) }}</td>
+					<td>{{ form_widget( searchForm.startDt ) }}</td>
+					<td>{{ form_widget( searchForm.endDt ) }}</td>
+				</tr>
+			</table>
+			<div style="display:none;">{{ form_rest( searchForm ) }}</div>
+		</form>
+
 		<table border=0 cellpadding=0 cellspacing=0 id="sysk-historyTable">
 			{% include 'SYSKAlertBundle:Widget:Block/sysk-historyTable-block.html.twig' 
 				with { 	'syskMessages' 	: syskMessages,

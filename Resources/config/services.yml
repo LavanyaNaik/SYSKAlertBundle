@@ -1,7 +1,27 @@
 services:
+    sysk.user.validator:
+        class: SYSK\AlertBundle\Service\SyskUserValidator
+        arguments: ["@doctrine.orm.entity_manager",  "@security.context"]
     sysk.alert.widget:
         class: SYSK\AlertBundle\Widget\UserMessageAlertWidget
         arguments: ["@doctrine.orm.entity_manager", "@security.context", "@session", "@twig", "SYSKAlertBundle:Widget:userAlert.html.twig"]
     sysk.history.widget:
         class: SYSK\AlertBundle\Widget\UserHistoryWidget
-        arguments: ["@doctrine.orm.entity_manager", "@security.context", "@session", "@twig", "SYSKAlertBundle:Widget:userHistory.html.twig"]
+        arguments: ["@doctrine.orm.entity_manager", "@security.context", "@session", "@twig", "SYSKAlertBundle:Widget:userHistory.html.twig", "@service_container", "%sysk_base_table_max%"]
+    sysk.manager.widget:
+        class: SYSK\AlertBundle\Widget\UserManagerHistoryWidget
+        arguments: ["@doctrine.orm.entity_manager", "@security.context", "@session", "@twig", "SYSKAlertBundle:Widget:userManagerHistory.html.twig", "@service_container", "%user_information_service%", "%sysk_base_table_max%", "@router"]
+###########################################################
+########################## FORMS ##########################
+###########################################################
+
+    sysk.alert.search:
+        class: SYSK\AlertBundle\Form\WidgetSearchType
+        tags:
+            - { name: form.type, alias: sysk_alert_search }
+
+    sysk.alert.search.manager:
+        class: SYSK\AlertBundle\Form\WidgetManagerSearchType
+        arguments: ["@router", "@service_container", "%user_information_service%", ]
+        tags:
+            - { name: form.type, alias: sysk_alert_search_manager }

@@ -29,3 +29,7 @@ sysk_alert_validateReceiver:
 sysk_alert_retrieveInboxPage:
     path:     /retrieveInboxPage/{page}
     defaults: { _controller: SYSKAlertBundle:SYSK:retrieveReadInboxPage }
+
+sysk_alert_retrieveManagerInboxPage:
+    path:     /retrieveManagerInboxPage/{page}
+    defaults: { _controller: SYSKAlertBundle:SYSK:retrieveManagerInboxPage }

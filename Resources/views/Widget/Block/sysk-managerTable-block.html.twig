@@ -1,0 +1,61 @@
+{% set columnCounter = 5 %}
+<thead>
+	<tr>
+		<th class="sysk-tbReceiver">Recepteur</th>
+		{% for k,header in extraHeaders %}
+			{% set columnCounter = columnCounter+1 %}
+			<th>{{ header }}</th>
+		{% endfor %}
+		<th class="sysk-tbMessage">Message</th>
+		<th class="sysk-tbStatus">Statut</th>
+		<th class="sysk-tbType">Type</th>
+		<th class="sysk-tbDate">Date</th>
+	</tr>
+</thead>
+<tbody>
+	{% if syskMessages|length > 0 %}
+		{% for syskMessage in syskMessages %}
+			<tr>
+				<td class="centered">{{ syskMessage["name"] }}</td>
+				{% for k,header in extraHeaders %}
+					{% if attribute(syskMessage["extras"], k) is defined %}
+						<td>{{ attribute(syskMessage["extras"], k).value }}</td>
+					{% else %}
+						<td></td>
+					{% endif %}
+				{% endfor %}
+				<td>{{ syskMessage["message"]|raw }}</td>
+				<td class="centered">{{ syskMessage["status"] }}</td>
+				<td class="centered">{{ syskMessage["type"] }}</td>
+				<td class="centered">{{ syskMessage["created"] }}</td>
+			</tr>
+		{% endfor %}
+	{% else %}
+		<tr>
+			<td colspan="5" class="centered">{{ empty_message }}</td>
+		</tr>
+	{% endif %}
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan={{ columnCounter }} class="syskPagination">
+			{% if actualPage > 1 %}
+				<a data-url="{{ path("sysk_alert_retrieveManagerInboxPage", {"page" : 1} ) }}" onClick="goToSyskPage( this )"><i class="fa fa-angle-double-left"></i></a>
+				<a data-url="{{ path("sysk_alert_retrieveManagerInboxPage", {"page" : actualPage-1} ) }}" onClick="goToSyskPage( this )"><i class="fa fa-angle-left"></i></a>
+			{% endif %}
+
+			{% for i in 1..paginationMax %}
+				{% if i == actualPage %}
+					<strong>{{ i }}</strong>
+				{% else %}
+					<a data-url="{{ path("sysk_alert_retrieveManagerInboxPage", {"page" : i} ) }}" onClick="goToSyskPage( this )">{{ i }}</a>
+				{% endif %}
+			{% endfor %}
+
+			{% if actualPage < paginationMax %}
+				<a data-url="{{ path("sysk_alert_retrieveManagerInboxPage", {"page" : actualPage+1} ) }}" onClick="goToSyskPage( this )"><i class="fa fa-angle-right"></i></a>
+				<a data-url="{{ path("sysk_alert_retrieveManagerInboxPage", {"page" : paginationMax} ) }}" onClick="goToSyskPage( this )"><i class="fa fa-angle-double-right"></i></a>
+			{% endif %}
+		</td>
+	</tr>
+</tfoot>
